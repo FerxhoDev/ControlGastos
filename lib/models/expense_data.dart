@@ -1,7 +1,7 @@
-class ExpenceData{
+class ExpenseData{
   final String category;
   final double amount;
 
-  ExpenceData(this.category, this.amount);
+  ExpenseData(this.category, this.amount);
 }
 
