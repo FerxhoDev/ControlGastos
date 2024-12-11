@@ -1,11 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AppTheme {
   //Colores principales de la aplicación
-  static const Color primaryColor = Color(0xFF008EFB);
+  static final Color? primaryColor = Colors.blue[900];
   static const Color accentColor = Color(0xFF00D4FF);
   static const Color backgroundColor = Color(0xFFE5E5E5);
   static const Color textFieldFocusedColor = Color.fromARGB(255, 1, 70, 199); // Color para el borde al enfocarse
@@ -15,10 +12,10 @@ class AppTheme {
     return ThemeData(
       primaryColor: primaryColor,
       scaffoldBackgroundColor: backgroundColor,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: backgroundColor,
         elevation: 0,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -27,7 +24,7 @@ class AppTheme {
           color: primaryColor,
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -77,5 +74,6 @@ class AppTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
+    
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestapp/models/expense_data.dart';
 import 'package:gestapp/screens/transaction_form_screen.dart';
+import 'package:gestapp/screens/transaction_history_screen.dart';
 import 'package:gestapp/widgets/expense_chart.dart';
 
 class SummaryScreen extends StatelessWidget {
@@ -29,7 +30,19 @@ class SummaryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Resumen de movimientos', style: TextStyle(fontWeight: FontWeight.bold),),
+              Row(
+                children: [
+                  const Text('Resumen de movimientos', style: TextStyle(fontWeight: FontWeight.bold),),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      // ir a TransactionHistoryScreen
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const TransactionHistoryScreen()));
+                    },
+                    icon: const Icon(Icons.history),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
               const Card(
                 child: ListTile(
