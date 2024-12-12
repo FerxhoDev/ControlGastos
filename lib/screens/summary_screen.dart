@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestapp/models/expense_data.dart';
+import 'package:gestapp/models/transaction.dart';
+import 'package:gestapp/provider/transaction_provider.dart';
 import 'package:gestapp/screens/transaction_form_screen.dart';
 import 'package:gestapp/screens/transaction_history_screen.dart';
 import 'package:gestapp/widgets/expense_chart.dart';
+import 'package:provider/provider.dart';
 
 class SummaryScreen extends StatelessWidget {
   const SummaryScreen({super.key});
@@ -10,15 +13,18 @@ class SummaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final List<ExpenseData> expenses = [
-    ExpenseData("Comida", 500),
-    ExpenseData("Salud", 700),
-    ExpenseData("Entreten", 300),
-    ExpenseData("Transp", 450),
-    ExpenseData("otros", 600),
-  ];
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+    final transactions = transactionProvider.transactions;
 
-  
+    final totalIncome = transactions
+        .where((transaction) => transaction.type == TransactionType.income)
+        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
+    final totalExpense = transactions
+        .where((transaction) => transaction.type == TransactionType.expense)
+        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Resumen de movimientos'),
@@ -44,19 +50,19 @@ class SummaryScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              const Card(
+              Card(
                 child: ListTile(
-                  leading: Icon(Icons.arrow_upward_rounded, color: Colors.green,),
-                  title: Text('Ingresos'),
-                  subtitle: Text('S/ 100.00'),
+                  leading: const Icon(Icons.arrow_upward_rounded, color: Colors.green,),
+                  title: const Text('Ingresos'),
+                  subtitle: Text('Q $totalIncome'),
                 ),
               ),
               const SizedBox(height: 10),
-              const Card(
+              Card(
                 child: ListTile( 
-                  leading: Icon(Icons.arrow_downward_outlined, color: Colors.red,),
-                  title: Text('Gastos'),
-                  subtitle: Text('S/ 100.00'),
+                  leading: const Icon(Icons.arrow_downward_outlined, color: Colors.red,),
+                  title: const Text('Gastos'),
+                  subtitle: Text('Q $totalExpense'),
                 ),
               ),
               const SizedBox(height: 10),
