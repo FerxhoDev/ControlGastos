@@ -1,22 +1,19 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestapp/models/expense_data.dart';
+import 'package:gestapp/provider/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
-class LineChartSample2 extends StatefulWidget {
-  final List<ExpenseData> expenses;
-  const LineChartSample2({super.key, required this.expenses});
 
-  @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
-}
+class LineChartSample2 extends StatelessWidget {
 
-class _LineChartSample2State extends State<LineChartSample2> {
+  LineChartSample2({super.key,});
+
   List<Color> gradientColors = [
     const Color(0xFF50E4FF),
     const Color(0xFF2196F3),
   ];
-
-  bool showAvg = false;
 
   List<FlSpot> generateFlSpots(List<ExpenseData> data) {
     return List<FlSpot>.generate(
@@ -26,7 +23,18 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   @override
+  
   Widget build(BuildContext context) {
+
+    return Consumer<TransactionProvider>(
+      builder: (context, transactionProvider, child) {
+        final expenses = transactionProvider.getExpenseData();
+        return _buildChart(expenses);
+      },
+    );
+  }
+
+  Widget _buildChart(List<ExpenseData> expenses) {
     return Stack(
       children: <Widget>[
         AspectRatio(
@@ -39,7 +47,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
               bottom: 12,
             ),
             child: LineChart(
-              mainData(widget.expenses),
+              mainData(expenses),
             ),
           ),
         ),
@@ -52,7 +60,12 @@ class _LineChartSample2State extends State<LineChartSample2> {
         ? data.map((e) => e.amount).reduce((a, b) => a > b ? a : b)
         : 0;
     double maxY = maxExpense + (maxExpense * 0.1); // Añade un 10% como margen
-    double interval = (maxY / 5).ceilToDouble(); // Ajusta a 5 divisiones
+    // Asegúrate de que maxY nunca sea cero
+    maxY = maxY > 0 ? maxY : 100;
+  
+    // Calcula el intervalo y asegúrate de que nunca sea cero
+    double interval = (maxY / 5).ceilToDouble();
+    interval = interval > 0 ? interval : 20;
 
     return LineChartData(
       gridData: FlGridData(

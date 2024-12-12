@@ -66,7 +66,7 @@ class SummaryScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   
                 ),
-                child: LineChartSample2(expenses: expenses),
+                child: LineChartSample2(),
               ),
             ],
           ),
